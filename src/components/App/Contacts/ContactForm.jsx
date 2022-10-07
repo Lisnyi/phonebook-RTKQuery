@@ -29,27 +29,33 @@ export const ContactForm = ({addContact}) => {
         resetForm()
     }
     
-        return  <Formik initialValues={initialValues} validationSchema={schema} onSubmit={handleSubmit}>
+    return  <Formik initialValues={initialValues} validationSchema={schema} onSubmit={handleSubmit} validateOnBlur={false}>
+                {({errors, touched}) => (
                     <NewContactForm autoComplete='off'>
-                        <Label htmlFor={nameId}>Name</Label>
-                        <Input
-                            type="text"
-                            name="name"
-                            id={nameId}
-                            placeholder="Name"
-                        />
-                        <Error name="name" component="span"/>
-                        <Label htmlFor={numberId}>Number</Label>
-                        <Input
-                            type="tel"
-                            name="number"
-                            id={numberId}
-                            placeholder="+380-546"
-                        />
-                        <Error name="number" component="span"/>
-                        <Button type='submit'>Add contact</Button>
-                    </NewContactForm>
-                </Formik>
+                    <Label htmlFor={nameId}>Name</Label>
+                    <Input
+                        type="text"
+                        name="name"
+                        id={nameId}
+                        placeholder="Name"
+                        error={errors.name ? 1 : 0}
+                        touched={touched.name ? 1 : 0}
+                    />
+                    <Error name="name" component="span"/>
+                    <Label htmlFor={numberId}>Number</Label>
+                    <Input
+                        type="tel"
+                        name="number"
+                        id={numberId}
+                        placeholder="+380-546"
+                        error={errors.number ? 1 : 0}
+                        touched={touched.number ? 1 : 0}
+                    />
+                    <Error name="number" component="span"/>
+                    <Button type='submit'>Add contact</Button>
+                </NewContactForm>
+                )}
+            </Formik>
     }
 
 ContactForm.propTypes = {

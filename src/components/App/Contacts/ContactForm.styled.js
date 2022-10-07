@@ -13,14 +13,13 @@ export const Label = styled.label`
 `
 
 export const Input = styled(Field)`
-    margin-bottom: 8px;
+    margin-bottom: ${props => Boolean(props.error) && Boolean(props.touched) ? 4 : 25}px;
     padding: 3px;
     padding-left: 10px;
     width: 400px;
     border: none;
     outline: 1px solid blue;
     border-radius: 3px;
-
 
     &:focus {
         outline: 1px solid orange;
