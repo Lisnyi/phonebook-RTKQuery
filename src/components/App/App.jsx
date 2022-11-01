@@ -25,7 +25,6 @@ export const App = () => {
   }
 
   function onAddContact (name, number) {
-    console.log(contacts)
     if (isDuplicate(name)) {
       return Notify.warning(`${name} is already in contacts`)
     }
@@ -37,7 +36,6 @@ export const App = () => {
   }
 
   function onDeleteContact (id) {
-    console.log(contacts)
     dispatch(deleteContact(id))
   }
 
