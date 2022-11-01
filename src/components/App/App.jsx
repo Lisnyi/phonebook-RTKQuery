@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { ContactForm, ContactList, Filter } from '../../components'
@@ -14,18 +14,6 @@ export const App = () => {
   const filter = useSelector(getFilter)
   const dispatch = useDispatch()
 
-
-  // useEffect(()=>{
-  //   const newContacts = JSON.parse(localStorage.getItem("contacts"))
-  //   if (newContacts?.length) {
-  //     setContacts(newContacts)
-  //   }
-  // },[])
-
-  // useEffect(()=>{
-  //   localStorage.setItem("contacts", JSON.stringify(contacts))
-  // },[contacts])
-
   function handleChange ({currentTarget}) {
     dispatch(setFilter(currentTarget.value))
   }
@@ -37,6 +25,7 @@ export const App = () => {
   }
 
   function onAddContact (name, number) {
+    console.log(contacts)
     if (isDuplicate(name)) {
       return Notify.warning(`${name} is already in contacts`)
     }
@@ -48,6 +37,7 @@ export const App = () => {
   }
 
   function onDeleteContact (id) {
+    console.log(contacts)
     dispatch(deleteContact(id))
   }
 
