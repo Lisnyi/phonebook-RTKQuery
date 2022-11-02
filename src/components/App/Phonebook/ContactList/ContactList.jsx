@@ -1,25 +1,21 @@
-import PropTypes from 'prop-types'
+import { useSelector, useDispatch } from 'react-redux';
+import { deleteContact, getFilteredContacts } from 'redux/contacts';
 import { Button } from 'components/App/App.styled'
 import { ContactRegister, ContactItem } from './ContactList.styled'
 
-export const ContactList = ({contacts, deleteContact}) => {
+export const ContactList = () => {
+
+    const contacts = useSelector(getFilteredContacts)
+    const dispatch = useDispatch()
     
     const markup = contacts.map(({id, name, number}) => (
         <ContactItem key={id}>
             {name}: {number}
-            <Button onClick={() => deleteContact(id)}>Delete</Button>
+            <Button onClick={() => dispatch(deleteContact(id))}>Delete</Button>
         </ContactItem>
     ))
 
     return  <ContactRegister>
                 {markup}
             </ContactRegister>
-}
-
-ContactList.propTypes = {
-    contacts: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        number: PropTypes.string.isRequired
-    }))
 }

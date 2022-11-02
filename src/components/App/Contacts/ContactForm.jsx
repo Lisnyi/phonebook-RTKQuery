@@ -1,11 +1,15 @@
 import { nanoid } from 'nanoid'
+import { useSelector, useDispatch } from 'react-redux';
+import { addContact, getContacts } from 'redux/contacts';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import PropTypes from 'prop-types'
 import { Button } from '../App.styled';
 import { NewContactForm, Input, Label, Error } from './ContactForm.styled';
 
-export const ContactForm = ({addContact}) => {
+export const ContactForm = () => {
+    const contacts = useSelector(getContacts)
+    const dispatch = useDispatch()
 
     const initialValues = {
         name: '',
@@ -19,13 +23,26 @@ export const ContactForm = ({addContact}) => {
         number: yup.string()
             .matches(/\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/, "Phone number must be digits and can contain spaces, dashes, parentheses and can start with +")
             .required()
-      });
+    });
 
     const nameId = nanoid()
     const numberId = nanoid()
 
+    function isDuplicate (name) {
+        const normalizedName = name.toLocaleLowerCase()
+        const result = contacts.find((contact) => contact.name.toLocaleLowerCase() === normalizedName)
+        return result
+    }
+
     const handleSubmit = ({name, number}, {resetForm}) => {
-        addContact(name, number)
+        if (isDuplicate(name)) {
+            return Notify.warning(`${name} is already in contacts`)
+        }
+        const newContact = {
+        name,
+        number
+        }
+        dispatch(addContact(newContact))
         resetForm()
     }
     
@@ -57,7 +74,3 @@ export const ContactForm = ({addContact}) => {
                 )}
             </Formik>
     }
-
-ContactForm.propTypes = {
-    addContact: PropTypes.func.isRequired
-}
