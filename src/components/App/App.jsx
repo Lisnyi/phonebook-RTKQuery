@@ -5,7 +5,7 @@ import { Box, MainTitle, SectionTitle } from './App.styled';
 
 
 export const App = () => {
-  const {data: contacts, isLoading, isSuccess, isError, error, isFetching} = useGetContactsQuery()
+  const {data: contacts, isLoading, isSuccess, isError, error} = useGetContactsQuery()
 
   return (
     <>

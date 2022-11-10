@@ -6,7 +6,7 @@ import { getFilter } from 'redux/filter'
 
 
 export const ContactList = ({contacts}) => {
-    const [removeContact, {isLoading}] = useRemoveContactMutation()
+    const [removeContact] = useRemoveContactMutation()
     const filter = useSelector(getFilter)
 
     const getSortedContacts = data => {
