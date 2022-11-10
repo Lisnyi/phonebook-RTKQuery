@@ -4,7 +4,7 @@ export const ContactRegister = styled.ul`
     margin: 0;
 `
 
-export const ContactItem =  styled.li`
+export const ContactElement =  styled.li`
     margin-bottom: 8px;
 
     &:last-child {

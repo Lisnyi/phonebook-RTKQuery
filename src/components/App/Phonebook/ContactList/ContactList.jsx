@@ -1,12 +1,10 @@
-import { useRemoveContactMutation } from 'redux/contacts/contacts-api'
-import { Button } from 'components/App/App.styled'
-import { ContactRegister, ContactItem } from './ContactList.styled'
+import { ContactRegister } from './ContactList.styled'
 import { useSelector } from 'react-redux'
 import { getFilter } from 'redux/filter'
+import { ContactItem } from './ContactItem/ContactItem'
 
 
 export const ContactList = ({contacts}) => {
-    const [removeContact] = useRemoveContactMutation()
     const filter = useSelector(getFilter)
 
     const getSortedContacts = data => {
@@ -34,14 +32,12 @@ export const ContactList = ({contacts}) => {
     const sortedList = getSortedContacts(contacts)
     const contactsList = getFilteredContacts(sortedList)
     
-    const markup = contactsList.map(({id, name, number}) => (
-        <ContactItem key={id}>
-            {name}: {number}
-            <Button onClick={() => removeContact(id)}>Delete</Button>
-        </ContactItem>
-    ))
-
     return  <ContactRegister>
-                {markup}
+                {contactsList.map(({id, name, number}) =>(
+                <ContactItem
+                    key={id}
+                    id={id}
+                    name={name}
+                    number={number}/>))}
             </ContactRegister>
 }

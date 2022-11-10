@@ -1,16 +1,16 @@
 import React from 'react'
 import { useGetContactsQuery } from 'redux/contacts/contacts-api';
 import { ContactForm, ContactList, Filter } from '../../components'
-import { Box, MainTitle, SectionTitle } from './App.styled';
+import { MainBox, Box, MainTitle, SectionTitle } from './App.styled';
 
 
 export const App = () => {
   const {data: contacts, isLoading, isSuccess, isError, error} = useGetContactsQuery()
 
   return (
-    <>
+    <MainBox>
+      <MainTitle>Phonebook</MainTitle>
       <Box>
-        <MainTitle>Phonebook</MainTitle>
         <ContactForm contacts={contacts}/>
       </Box>
   
@@ -23,6 +23,6 @@ export const App = () => {
           {isLoading && <p>Loading...</p>}
           {isError && <p>{error.message}</p>}
       </Box>
-    </>
+    </MainBox>
   )
 }

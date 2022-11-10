@@ -4,6 +4,9 @@ import { Form, Field, ErrorMessage } from 'formik';
 export const NewContactForm = styled(Form)`
     display: flex;
     flex-direction: column;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #e3e2e1;
 `
 
 export const Label = styled.label`

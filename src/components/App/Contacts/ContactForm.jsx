@@ -33,7 +33,7 @@ export const ContactForm = ({contacts}) => {
     const nameId = nanoid()
     const numberId = nanoid()
 
-    const handleSubmit = ({name, number}, {resetForm}) => {
+    const handleSubmit = async ({name, number}, {resetForm}) => {
         const newContact = {
         name,
         number
@@ -42,7 +42,8 @@ export const ContactForm = ({contacts}) => {
         if (isDuplicate(name, contacts)) {
             return Notify.warning(`${name} is already in contacts`)
         }
-        addContact(newContact)
+        await addContact(newContact)
+        Notify.success(`${name} successfully added`)
         resetForm()
     }
     
@@ -69,7 +70,7 @@ export const ContactForm = ({contacts}) => {
                         touched={touched.number ? 1 : 0}
                     />
                     <Error name="number" component="span"/>
-                    <Button type='submit' disabled={isLoading}>Add contact</Button>
+                    <Button type='submit' disabled={isLoading}>{isLoading ? 'Adding...' : 'Add contact'}</Button>
                 </NewContactForm>
                 )}
             </Formik>
