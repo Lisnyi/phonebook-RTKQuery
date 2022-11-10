@@ -1,15 +1,14 @@
 import { nanoid } from 'nanoid'
-import { useDispatch, useSelector } from 'react-redux';
-import { addContact, getContacts } from 'redux/contacts';
+import { useAddContactMutation } from 'redux/contacts/contacts-api';
 import { Formik } from 'formik';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import * as yup from 'yup';
 import { Button } from '../App.styled';
 import { NewContactForm, Input, Label, Error } from './ContactForm.styled';
 
-export const ContactForm = () => {
-    const dispatch = useDispatch()
-    const contacts = useSelector(getContacts)
+
+export const ContactForm = ({contacts}) => {
+    const [addContact, {isLoading}] = useAddContactMutation()
 
     const initialValues = {
         name: '',
@@ -39,10 +38,11 @@ export const ContactForm = () => {
         name,
         number
         }
+
         if (isDuplicate(name, contacts)) {
             return Notify.warning(`${name} is already in contacts`)
         }
-        dispatch(addContact(newContact))
+        addContact(newContact)
         resetForm()
     }
     
@@ -69,7 +69,7 @@ export const ContactForm = () => {
                         touched={touched.number ? 1 : 0}
                     />
                     <Error name="number" component="span"/>
-                    <Button type='submit'>Add contact</Button>
+                    <Button type='submit' disabled={isLoading}>Add contact</Button>
                 </NewContactForm>
                 )}
             </Formik>
