@@ -1,11 +1,19 @@
 import React from 'react'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ContactForm, ContactList, Filter } from '../../components'
-import { getContacts } from 'redux/contacts';
+import { fetchContacts, getContacts, getError, getIsLoading } from 'redux/contacts';
 import { Box, MainTitle, SectionTitle } from './App.styled';
+import { useEffect } from 'react';
 
 export const App = () => {
   const contacts = useSelector(getContacts)
+  const loading = useSelector(getIsLoading)
+  const error = useSelector(getError)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(fetchContacts())
+  }, [dispatch])
 
   return (
     <>
@@ -20,6 +28,8 @@ export const App = () => {
           {contacts.length
             ? <ContactList/>
             : null}
+          {loading && <p>Loading...</p>}
+          {error && <p>{error.message}</p>}
       </Box>
     </>
   )

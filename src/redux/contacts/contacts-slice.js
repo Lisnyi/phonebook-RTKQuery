@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { nanoid } from "nanoid";
-import { fetchContacts, addContact, removeContact } from "./contacts-oprations";
+import { fetchContacts, addContact, removeContact } from "./contacts-operations";
 
 const contactsIsnitialState = {
     items: [],
@@ -12,28 +11,40 @@ const contactsSlice = createSlice({
     name: "contacts",
     initialState: contactsIsnitialState,
     extraReducers: {
-        
+        [fetchContacts.pending]: (store) => {
+            store.isLoading = true;
+        },
+        [fetchContacts.fulfilled]: (store, {payload}) => {
+            store.isLoading = false;
+            store.items = payload;
+        },
+        [fetchContacts.rejected]: (store, {payload}) => {
+            store.isLoading = false;
+            store.error = payload;
+        },
+        [addContact.pending]: (store) => {
+            store.isLoading = true;
+        },
+        [addContact.fulfilled]: (store, {payload}) => {
+            store.isLoading = false;
+            store.items.push(payload)
+        },
+        [addContact.rejected]: (store, {payload}) => {
+            store.isLoading = false;
+            store.error = payload;
+        },
+        [removeContact.pending]: (store) => {
+            store.isLoading = true;
+        },
+        [removeContact.fulfilled]: (store, {payload}) => {
+            store.isLoading = false;
+            store.items = store.items.filter(item => item.id !== payload)
+        },
+        [removeContact.rejected]: (store, {payload}) => {
+            store.isLoading = false;
+            store.error = payload;
+        },
     }
-    // reducers: {
-    //     addContact: {
-    //         reducer({contacts}, {payload}){
-    //             contacts.push(payload)
-    //         },
-    //         prepare(data){
-    //             return {
-    //                 payload:{
-    //                     ...data,
-    //                     id: nanoid(),
-    //                 }
-    //             }
-    //         }
-    //     },
-    //     deleteContact ({contacts}, {payload}) {
-    //         const index = contacts.findIndex(contact => contact.id === payload);
-    //         contacts.splice(index, 1);
-    //       }
-    // }
-}
-)
+})
 
 export const contactsReducer = contactsSlice.reducer

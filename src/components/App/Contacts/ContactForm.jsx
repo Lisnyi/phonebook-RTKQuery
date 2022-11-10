@@ -1,19 +1,25 @@
 import { nanoid } from 'nanoid'
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addContact, getContacts } from 'redux/contacts';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { Formik } from 'formik';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import * as yup from 'yup';
 import { Button } from '../App.styled';
 import { NewContactForm, Input, Label, Error } from './ContactForm.styled';
 
 export const ContactForm = () => {
-    const contacts = useSelector(getContacts)
     const dispatch = useDispatch()
+    const contacts = useSelector(getContacts)
 
     const initialValues = {
         name: '',
         number: ''
+    }
+
+    function isDuplicate (name, contactsList) {
+        const normalizedName = name.toLocaleLowerCase()
+        const result = contactsList.find((contact) => contact.name.toLocaleLowerCase() === normalizedName)
+        return result
     }
 
     const schema = yup.object().shape({
@@ -28,19 +34,13 @@ export const ContactForm = () => {
     const nameId = nanoid()
     const numberId = nanoid()
 
-    function isDuplicate (name) {
-        const normalizedName = name.toLocaleLowerCase()
-        const result = contacts.find((contact) => contact.name.toLocaleLowerCase() === normalizedName)
-        return result
-    }
-
     const handleSubmit = ({name, number}, {resetForm}) => {
-        if (isDuplicate(name)) {
-            return Notify.warning(`${name} is already in contacts`)
-        }
         const newContact = {
         name,
         number
+        }
+        if (isDuplicate(name, contacts)) {
+            return Notify.warning(`${name} is already in contacts`)
         }
         dispatch(addContact(newContact))
         resetForm()
